@@ -43,21 +43,21 @@ public class AdminController {
     }
 
     @GetMapping("admin/new")
-    public String newUser(@ModelAttribute("user") User user, Model model) {
+    public String addNewUser(@ModelAttribute("user") User user, Model model) {
         List<Role> roles = roleRepository.findAll();
         model.addAttribute("roles", roles);
         return "new";
     }
 
     @PostMapping("admin")
-    public String create(@ModelAttribute("user") User user) {
+    public String createUser(@ModelAttribute("user") User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.addUser(user);
         return "redirect:/admin";
     }
 
     @GetMapping("admin/{id}/edit")
-    public String edit(Model model, @PathVariable("id") int id) {
+    public String editUser(Model model, @PathVariable("id") int id) {
         model.addAttribute("user", userService.getUserById(id));
         List<Role> roles = roleRepository.findAll();
         model.addAttribute("roles", roles);
