@@ -10,22 +10,21 @@ import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
+import ru.kata.spring.boot_security.demo.service.RoleService;
+import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.util.List;
 
 @Controller
 public class AdminController {
 
-    private final UserRepository userService;
-    private final RoleRepository roleRepository;
+    private final UserService userService;
+    private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public AdminController(UserRepository userService,
-                           RoleRepository roleRepository,
-                           PasswordEncoder passwordEncoder) {
+    public AdminController(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
-        this.roleRepository = roleRepository;
+        this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -44,7 +43,7 @@ public class AdminController {
 
     @GetMapping("admin/new")
     public String addNewUser(@ModelAttribute("user") User user, Model model) {
-        List<Role> roles = roleRepository.getAllRoles();
+        List<Role> roles = roleService.getAllRoles();
         model.addAttribute("roles", roles);
         return "new";
     }
@@ -59,7 +58,7 @@ public class AdminController {
     @GetMapping("admin/{id}/edit")
     public String editUser(Model model, @PathVariable("id") int id) {
         model.addAttribute("user", userService.getUserById(id));
-        List<Role> roles = roleRepository.getAllRoles();
+        List<Role> roles = roleService.getAllRoles();
         model.addAttribute("roles", roles);
         return "edit";
     }

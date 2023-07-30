@@ -6,6 +6,7 @@ import java.util.List;
 
 
 public interface RoleRepository {
+
     void addRole(Role role);
     List<Role> getAllRoles();
 }
